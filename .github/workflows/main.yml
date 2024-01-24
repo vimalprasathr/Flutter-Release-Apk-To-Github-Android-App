@@ -48,5 +48,5 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "build/app/outputs/flutter-apk/app-release-*.apk"  # Adjust the path based on your project structure
-          tag: ${{ env.INCREMENTED_VERSION }}
+          tag: v1${{ env.INCREMENTED_VERSION }}
           token: ${{ secrets.GITHUB_TOKEN }}
