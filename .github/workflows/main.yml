@@ -21,11 +21,17 @@ jobs:
       id: increment_version
       run: echo "INCREMENTED_VERSION=${VERSION%.*}.$((${VERSION##*.}+1))" >> $GITHUB_ENV
 
+    - name: Debug Tag
+      run: echo "Tag being used: ${{ env.INCREMENTED_VERSION }}"
+
+    - name: Check if tag exists
+      run: git tag -l ${{ env.INCREMENTED_VERSION }} || echo "Tag does not exist"
+
     - name: Create artifacts directory
       run: mkdir -p build/app/outputs/apk/release
 
     - name: Push to Releases
-      uses: ncipollo/release-action@v1  # Use a specific version
+      uses: ncipollo/release-action@v1.1  # Use a specific version
       with:
         artifacts: "build/app/outputs/apk/release/*"
         tag: ${{ env.INCREMENTED_VERSION }}
