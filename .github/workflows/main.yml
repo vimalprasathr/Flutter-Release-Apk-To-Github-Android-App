@@ -19,7 +19,7 @@ jobs:
 
     - name: Increment the tag version
       id: increment_version
-      run: echo "INCREMENTED_VERSION=$(echo ${{ steps.version.outputs.VERSION }} | awk -F. -v OFS=. '{$NF++; print}' | sed 's/\.0*$/\'/') >> $GITHUB_ENV
+      run: echo "INCREMENTED_VERSION=${VERSION%.*}.$((${VERSION##*.}+1))" >> $GITHUB_ENV
 
     - name: Push to Releases
       uses: ncipollo/release-action@v1
