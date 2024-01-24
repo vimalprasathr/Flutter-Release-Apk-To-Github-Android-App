@@ -30,16 +30,12 @@ jobs:
       - name: Build APK
         run: flutter build apk --release --split-per-abi
 
-      - name: Get the latest tag
-        id: version
-        run: echo "VERSION=$(git describe --abbrev=0 --tags)" >> $GITHUB_ENV
-
-      - name: Increment the tag version
-        id: increment_version
-        run: echo "INCREMENTED_VERSION=${VERSION%.*}.$((${VERSION##*.}+1))" >> $GITHUB_ENV
+      - name: Get the latest commit ID
+        id: commit_id
+        run: echo "COMMIT_ID=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Check if tag exists
-        run: git tag -l ${{ env.INCREMENTED_VERSION }} || echo "Tag does not exist"
+        run: git tag -l ${{ env.COMMIT_ID }} || echo "Tag does not exist"
 
       - name: Print Git Tags
         run: git tag -l
@@ -48,5 +44,5 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "build/app/outputs/flutter-apk/app-release-*.apk"  # Adjust the path based on your project structure
-          tag: v1${{ env.INCREMENTED_VERSION }}
+          tag: v1.${{ env.COMMIT_ID }}
           token: ${{ secrets.GITHUB_TOKEN }}
