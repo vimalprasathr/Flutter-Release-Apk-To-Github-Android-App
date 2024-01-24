@@ -38,12 +38,18 @@ jobs:
         id: increment_version
         run: echo "INCREMENTED_VERSION=${VERSION%.*}.$((${VERSION##*.}+1))" >> $GITHUB_ENV
 
+      - name: Debug Tag
+        run: echo "Tag being used: ${{ env.INCREMENTED_VERSION }}"
+
       - name: Check if tag exists
         run: git tag -l ${{ env.INCREMENTED_VERSION }} || echo "Tag does not exist"
+
+      - name: Print Git Tags
+        run: git tag -l
 
       - name: Push to Releases
         uses: ncipollo/release-action@v1
         with:
           artifacts: "build/app/outputs/flutter-apk/app-release-*.apk"  # Adjust the path based on your project structure
           tag: ${{ env.INCREMENTED_VERSION }}
-          token: ${{ secrets.TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
