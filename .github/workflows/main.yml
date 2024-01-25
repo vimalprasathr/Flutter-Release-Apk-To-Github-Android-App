@@ -1,9 +1,14 @@
-on:
-  push:
-    tags:
-      - 3922d9d
+name: Dev Deploy
 
-name: Flutter CI
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    tags: 
+      '3922d9d'
+
+  # Allow manual trigger 
+  workflow_dispatch:
 
 jobs:
   build:
@@ -14,11 +19,12 @@ jobs:
       - uses: actions/setup-java@v2
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '11.0.12'
 
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
+          flutter-version: '2.10.5'  # Adjust the version accordingly
       - run: flutter pub get
       - run: flutter build apk --release --split-per-abi
 
