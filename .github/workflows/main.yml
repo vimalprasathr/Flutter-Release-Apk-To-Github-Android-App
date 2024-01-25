@@ -1,11 +1,9 @@
-name: Flutter CI
-
 on:
   push:
     branches:
       - master
 
-
+name: Flutter CI
 
 jobs:
   build:
@@ -24,19 +22,9 @@ jobs:
       - run: flutter pub get
       - run: flutter build apk --release --split-per-abi
 
-      - name: Get the latest commit ID
-        id: commit_id
-        run: echo "COMMIT_ID=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-
-      - name: Check if tag exists
-        run: git tag -l ${{ env.COMMIT_ID }} || echo "Tag does not exist"
-
-      - name: Print Git Tags
-        run: git tag -l
-
       - name: Push to Releases
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/app/outputs/flutter-apk/app-release-*.apk"  # Adjust the path based on your project structure
-          tag: v1.${{ env.COMMIT_ID }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: "build/app/outputs/apk/release/*"
+          tag: v1.0.1
+          token: ${{ secrets.TOKEN }}
