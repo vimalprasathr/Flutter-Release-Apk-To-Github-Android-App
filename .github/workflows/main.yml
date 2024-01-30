@@ -22,4 +22,5 @@ jobs:
           echo "BUILD_TIME=\$(date '+%H%M%S')" >> .env
           echo "BUILD_NUMBER=21" >> .env
           echo "VERSION=\${BUILD_DATE}.\${BUILD_TIME}-\${BUILD_NUMBER}" >> .env
+          car .env
 
