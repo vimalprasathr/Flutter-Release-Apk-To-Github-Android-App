@@ -18,8 +18,8 @@ jobs:
 
       - name: Set Environment Variables
         run: |
-          echo "BUILD_DATE=$(date '+%d%m%Y')" >> .env
-          echo "BUILD_TIME=$(date '+%H%M%S')" >> .env
-          echo "BUILD_NUMBER=${{ github.run_number }}" >> .env
-          echo "VERSION=${BUILD_DATE}.${BUILD_TIME}-${BUILD_NUMBER}" >> .env
-          cat .env
+          echo "BUILD_DATE=\$(date '+%d%m%Y')" >> .env
+          echo "BUILD_TIME=\$(date '+%H%M%S')" >> .env
+          echo "BUILD_NUMBER=21" >> .env
+          echo "VERSION=\${BUILD_DATE}.\${BUILD_TIME}-\${BUILD_NUMBER}" >> .env
+
