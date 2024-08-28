@@ -29,15 +29,20 @@ jobs:
       - name: Get Latest Tag
         id: get_latest_tag
         run: |
-          latest_tag=$(git describe --tags --abbrev=0)
+          latest_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [[ -z "$latest_tag" ]]; then
+            echo "No tags found. Setting initial tag to v1.0.0"
+            latest_tag="v1.0.0"
+          fi
           echo "Latest tag: $latest_tag"
           echo "::set-output name=LATEST_TAG::$latest_tag"
+        shell: bash
 
       - name: Determine Next Tag
         id: determine_next_tag
         run: |
           latest_tag=${{ steps.get_latest_tag.outputs.LATEST_TAG }}
-          if [[ -z "$latest_tag" ]]; then
+          if [[ "$latest_tag" == "v1.0.0" ]]; then
             next_tag="v1.0.0"
           else
             IFS='.' read -r -a parts <<< "${latest_tag#v}"
@@ -49,6 +54,7 @@ jobs:
           fi
           echo "Next tag: $next_tag"
           echo "::set-output name=NEXT_TAG::$next_tag"
+        shell: bash
 
       - name: Push to Releases
         uses: ncipollo/release-action@v1
